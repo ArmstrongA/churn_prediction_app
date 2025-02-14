@@ -1,0 +1,273 @@
+
+NUMERICAL_STATS
+==================================================
+       Tenure Months  Monthly Charges  Total Charges  Revenue_per_Month  \
+count   7.043000e+03     7.043000e+03   7.043000e+03        7043.000000   
+mean   -6.456728e-17     1.614182e-17   1.614182e-17           0.000000   
+std     1.000071e+00     1.000071e+00   1.000071e+00           1.000071   
+min    -1.844089e+00    -1.568580e+00  -1.930489e+00          -1.732070   
+25%    -8.555903e-01    -9.632335e-01  -7.793633e-01          -0.935655   
+50%     1.182675e-01     2.020977e-01   1.959319e-02           0.202407   
+75%     9.253082e-01     8.341425e-01   8.687723e-01           0.841152   
+max     1.342198e+00     1.753147e+00   1.759825e+00           1.826792   
+
+       Average_Monthly_Charges  Charges_Evolution  Total_Services  \
+count              7043.000000       7.043000e+03     7043.000000   
+mean                  0.000000       6.053182e-18        2.941076   
+std                   1.000071       1.000071e+00        1.843899   
+min                  -1.732070      -6.993266e+00        0.000000   
+25%                  -0.935655      -4.498211e-01        1.000000   
+50%                   0.202407      -9.353913e-03        3.000000   
+75%                   0.841152       4.321671e-01        4.000000   
+max                   1.826792       7.573681e+00        7.000000   
+
+       Contract_Risk_Score  Payment_Risk_Score  Service_Dependency_Score  \
+count          7043.000000         7043.000000              7.043000e+03   
+mean              2.309527            1.900469             -3.430137e-17   
+std               0.833755            0.872538              1.000071e+00   
+min               1.000000            1.000000             -2.661865e+00   
+25%               2.000000            1.000000             -1.055013e+00   
+50%               3.000000            2.000000             -6.576177e-02   
+75%               3.000000            3.000000              9.616197e-01   
+max               3.000000            3.000000              1.714486e+00   
+
+       Loyalty_Adjusted_Value  Gender_Encoded  Contract_Encoded  \
+count            7.043000e+03     7043.000000       7043.000000   
+mean             8.070910e-18        0.504756          0.690473   
+std              1.000071e+00        0.500013          0.833755   
+min             -2.655809e+00        0.000000          0.000000   
+25%             -8.715448e-01        0.000000          0.000000   
+50%              8.290061e-02        1.000000          0.000000   
+75%              8.663101e-01        1.000000          1.000000   
+max              1.763988e+00        1.000000          2.000000   
+
+       Payment Method_Encoded  
+count             7043.000000  
+mean                 1.574329  
+std                  1.068104  
+min                  0.000000  
+25%                  1.000000  
+50%                  2.000000  
+75%                  2.000000  
+max                  3.000000  
+
+
+CATEGORICAL_STATS
+==================================================
+{'Gender': Gender
+Male      0.504756
+Female    0.495244
+Name: proportion, dtype: float64, 'Senior Citizen': Senior Citizen
+No     0.837853
+Yes    0.162147
+Name: proportion, dtype: float64, 'Partner': Partner
+No     0.516967
+Yes    0.483033
+Name: proportion, dtype: float64, 'Dependents': Dependents
+No     0.76899
+Yes    0.23101
+Name: proportion, dtype: float64, 'Phone Service': Phone Service
+Yes    0.903166
+No     0.096834
+Name: proportion, dtype: float64, 'Multiple Lines': Multiple Lines
+No                  0.481329
+Yes                 0.421837
+No phone service    0.096834
+Name: proportion, dtype: float64, 'Online Security': Online Security
+No                     0.496663
+Yes                    0.286668
+No internet service    0.216669
+Name: proportion, dtype: float64, 'Online Backup': Online Backup
+No                     0.438450
+Yes                    0.344881
+No internet service    0.216669
+Name: proportion, dtype: float64, 'Device Protection': Device Protection
+No                     0.439443
+Yes                    0.343888
+No internet service    0.216669
+Name: proportion, dtype: float64, 'Tech Support': Tech Support
+No                     0.493114
+Yes                    0.290217
+No internet service    0.216669
+Name: proportion, dtype: float64, 'Streaming TV': Streaming TV
+No                     0.398978
+Yes                    0.384353
+No internet service    0.216669
+Name: proportion, dtype: float64, 'Streaming Movies': Streaming Movies
+No                     0.395428
+Yes                    0.387903
+No internet service    0.216669
+Name: proportion, dtype: float64, 'Contract': Contract
+Month-to-month    0.550192
+Two year          0.240664
+One year          0.209144
+Name: proportion, dtype: float64, 'Paperless Billing': Paperless Billing
+Yes    0.592219
+No     0.407781
+Name: proportion, dtype: float64, 'Payment Method': Payment Method
+Electronic check             0.335794
+Mailed check                 0.228880
+Bank transfer (automatic)    0.219225
+Credit card (automatic)      0.216101
+Name: proportion, dtype: float64, 'Churn Label': Churn Label
+No     0.73463
+Yes    0.26537
+Name: proportion, dtype: float64}
+
+
+MISSING_VALUES
+==================================================
+Gender                          0
+Senior Citizen                  0
+Partner                         0
+Dependents                      0
+Tenure Months                   0
+Phone Service                   0
+Multiple Lines                  0
+Online Security                 0
+Online Backup                   0
+Device Protection               0
+Tech Support                    0
+Streaming TV                    0
+Streaming Movies                0
+Contract                        0
+Paperless Billing               0
+Payment Method                  0
+Monthly Charges                 0
+Total Charges                   0
+Churn Label                     0
+Revenue_per_Month               0
+Average_Monthly_Charges         0
+Charges_Evolution               0
+Total_Services                  0
+Contract_Risk_Score             0
+Payment_Risk_Score              0
+Service_Dependency_Score        0
+Loyalty_Adjusted_Value          0
+Gender_Encoded                  0
+Contract_Encoded                0
+Payment Method_Encoded          0
+Internet Service_DSL            0
+Internet Service_Fiber optic    0
+Internet Service_No             0
+Value_Segment_Low               0
+Value_Segment_Medium            0
+Value_Segment_High              0
+Value_Segment_Premium           0
+dtype: int64
+
+
+CORRELATION_ANALYSIS
+==================================================
+                          Tenure Months  Monthly Charges  Total Charges  \
+Tenure Months                  1.000000         0.244338       0.898637   
+Monthly Charges                0.244338         1.000000       0.615679   
+Total Charges                  0.898637         0.615679       1.000000   
+Revenue_per_Month              0.240632         0.995135       0.616079   
+Average_Monthly_Charges        0.240632         0.995135       0.616079   
+Charges_Evolution             -0.003764         0.008052      -0.025045   
+Total_Services                 0.489743         0.764486       0.729082   
+Contract_Risk_Score           -0.638415         0.078039      -0.457653   
+Payment_Risk_Score            -0.334969         0.113666      -0.225869   
+Service_Dependency_Score       0.438623         0.821203       0.706600   
+Loyalty_Adjusted_Value         0.699208         0.832031       0.931748   
+Gender_Encoded                 0.002867        -0.014537      -0.002747   
+Contract_Encoded               0.638415        -0.078039       0.457653   
+Payment Method_Encoded        -0.370644        -0.193204      -0.371584   
+
+                          Revenue_per_Month  Average_Monthly_Charges  \
+Tenure Months                      0.240632                 0.240632   
+Monthly Charges                    0.995135                 0.995135   
+Total Charges                      0.616079                 0.616079   
+Revenue_per_Month                  1.000000                 1.000000   
+Average_Monthly_Charges            1.000000                 1.000000   
+Charges_Evolution                 -0.077350                -0.077350   
+Total_Services                     0.761834                 0.761834   
+Contract_Risk_Score                0.075236                 0.075236   
+Payment_Risk_Score                 0.113694                 0.113694   
+Service_Dependency_Score           0.818270                 0.818270   
+Loyalty_Adjusted_Value             0.825575                 0.825575   
+Gender_Encoded                    -0.014422                -0.014422   
+Contract_Encoded                  -0.075236                -0.075236   
+Payment Method_Encoded            -0.190671                -0.190671   
+
+                          Charges_Evolution  Total_Services  \
+Tenure Months                     -0.003764        0.489743   
+Monthly Charges                    0.008052        0.764486   
+Total Charges                     -0.025045        0.729082   
+Revenue_per_Month                 -0.077350        0.761834   
+Average_Monthly_Charges           -0.077350        0.761834   
+Charges_Evolution                  1.000000       -0.007297   
+Total_Services                    -0.007297        1.000000   
+Contract_Risk_Score                0.013287       -0.285195   
+Payment_Risk_Score                -0.000812       -0.108327   
+Service_Dependency_Score          -0.005133        0.960421   
+Loyalty_Adjusted_Value             0.004574        0.806329   
+Gender_Encoded                     0.008427       -0.016561   
+Contract_Encoded                  -0.013287        0.285195   
+Payment Method_Encoded            -0.004888       -0.247144   
+
+                          Contract_Risk_Score  Payment_Risk_Score  \
+Tenure Months                       -0.638415           -0.334969   
+Monthly Charges                      0.078039            0.113666   
+Total Charges                       -0.457653           -0.225869   
+Revenue_per_Month                    0.075236            0.113694   
+Average_Monthly_Charges              0.075236            0.113694   
+Charges_Evolution                    0.013287           -0.000812   
+Total_Services                      -0.285195           -0.108327   
+Contract_Risk_Score                  1.000000            0.373219   
+Payment_Risk_Score                   0.373219            1.000000   
+Service_Dependency_Score            -0.204153           -0.046703   
+Loyalty_Adjusted_Value              -0.235034           -0.099088   
+Gender_Encoded                      -0.000126            0.007432   
+Contract_Encoded                    -1.000000           -0.373219   
+Payment Method_Encoded               0.227543            0.656970   
+
+                          Service_Dependency_Score  Loyalty_Adjusted_Value  \
+Tenure Months                             0.438623                0.699208   
+Monthly Charges                           0.821203                0.832031   
+Total Charges                             0.706600                0.931748   
+Revenue_per_Month                         0.818270                0.825575   
+Average_Monthly_Charges                   0.818270                0.825575   
+Charges_Evolution                        -0.005133                0.004574   
+Total_Services                            0.960421                0.806329   
+Contract_Risk_Score                      -0.204153               -0.235034   
+Payment_Risk_Score                       -0.046703               -0.099088   
+Service_Dependency_Score                  1.000000                0.817227   
+Loyalty_Adjusted_Value                    0.817227                1.000000   
+Gender_Encoded                           -0.015725               -0.008015   
+Contract_Encoded                          0.204153                0.235034   
+Payment Method_Encoded                   -0.229421               -0.325654   
+
+                          Gender_Encoded  Contract_Encoded  \
+Tenure Months                   0.002867          0.638415   
+Monthly Charges                -0.014537         -0.078039   
+Total Charges                  -0.002747          0.457653   
+Revenue_per_Month              -0.014422         -0.075236   
+Average_Monthly_Charges        -0.014422         -0.075236   
+Charges_Evolution               0.008427         -0.013287   
+Total_Services                 -0.016561          0.285195   
+Contract_Risk_Score            -0.000126         -1.000000   
+Payment_Risk_Score              0.007432         -0.373219   
+Service_Dependency_Score       -0.015725          0.204153   
+Loyalty_Adjusted_Value         -0.008015          0.235034   
+Gender_Encoded                  1.000000          0.000126   
+Contract_Encoded                0.000126          1.000000   
+Payment Method_Encoded          0.017352         -0.227543   
+
+                          Payment Method_Encoded  
+Tenure Months                          -0.370644  
+Monthly Charges                        -0.193204  
+Total Charges                          -0.371584  
+Revenue_per_Month                      -0.190671  
+Average_Monthly_Charges                -0.190671  
+Charges_Evolution                      -0.004888  
+Total_Services                         -0.247144  
+Contract_Risk_Score                     0.227543  
+Payment_Risk_Score                      0.656970  
+Service_Dependency_Score               -0.229421  
+Loyalty_Adjusted_Value                 -0.325654  
+Gender_Encoded                          0.017352  
+Contract_Encoded                       -0.227543  
+Payment Method_Encoded                  1.000000  
+

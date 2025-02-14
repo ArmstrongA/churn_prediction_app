@@ -1,0 +1,64 @@
+version: 2.1
+jobs:
+  build-and-test:
+    docker:
+      - image: 'cimg/python:3.9'
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - 'v1-dependencies-{{ checksum "requirements.txt" }}'
+      - run:
+          name: Install Dependencies
+          command: pip install --no-cache-dir -r requirements.txt
+      - save_cache:
+          paths:
+            - ./venv
+          key: 'v1-dependencies-{{ checksum "requirements.txt" }}'
+      - run:
+          name: Run Tests
+          command: pytest tests/
+      - run:
+          name: Build Docker Image
+          command: 'docker build -t your-dockerhub-username/churn-prediction:latest .'
+      - run:
+          name: Docker Login
+          command: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - run:
+          name: Push Docker Image
+          command: 'docker push your-dockerhub-username/churn-prediction:latest'
+  deploy-staging:
+    docker:
+      - image: 'your-dockerhub-username/churn-prediction:latest'
+    steps:
+      - run:
+          name: Deploy to Staging
+          command: null
+          environment:
+            - STAGE_VAR: $STAGE_VAR
+  deploy-production:
+    docker:
+      - image: 'your-dockerhub-username/churn-prediction:latest'
+    steps:
+      - run:
+          name: Deploy to Production
+          command: null
+          requires:
+            - deploy-staging
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+          environment:
+            - PROD_VAR: $PROD_VAR
+workflows:
+  build-deploy:
+    jobs:
+      - build-and-test
+      - deploy-staging:
+          requires:
+            - build-and-test
+      - deploy-production:
+          requires:
+            - deploy-staging
