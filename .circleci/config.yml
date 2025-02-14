@@ -17,7 +17,7 @@ jobs:
           key: 'v1-dependencies-{{ checksum "requirements.txt" }}'
       - run:
           name: Run Tests
-          command: pytest tests/
+          command: pytest tests/ -v
       - run:
           name: Build Docker Image
           command: 'docker build -t your-dockerhub-username/churn-prediction:latest .'
@@ -27,38 +27,8 @@ jobs:
       - run:
           name: Push Docker Image
           command: 'docker push your-dockerhub-username/churn-prediction:latest'
-  deploy-staging:
-    docker:
-      - image: 'your-dockerhub-username/churn-prediction:latest'
-    steps:
-      - run:
-          name: Deploy to Staging
-          command: null
-          environment:
-            - STAGE_VAR: $STAGE_VAR
-  deploy-production:
-    docker:
-      - image: 'your-dockerhub-username/churn-prediction:latest'
-    steps:
-      - run:
-          name: Deploy to Production
-          command: null
-          requires:
-            - deploy-staging
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
-          environment:
-            - PROD_VAR: $PROD_VAR
+  
 workflows:
   build-deploy:
     jobs:
-      - build-and-test
-      - deploy-staging:
-          requires:
-            - build-and-test
-      - deploy-production:
-          requires:
-            - deploy-staging
+      - build-and-test 
