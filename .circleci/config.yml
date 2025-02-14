@@ -1,34 +1,49 @@
 version: 2.1
+
 jobs:
   build-and-test:
     docker:
-      - image: 'cimg/python:3.12.5'
+      - image: cimg/python:3.12.5
     steps:
       - checkout
+      # Enable Docker support
+      - setup_remote_docker:
+          docker_layer_caching: true
+          version: 20.10.14
+      # Install dependencies and run tests
       - restore_cache:
           keys:
-            - 'v1-dependencies-{{ checksum "requirements.txt" }}'
+            - v1-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Install Dependencies
-          command: pip install --no-cache-dir -r requirements.txt
+          command: |
+            python -m venv venv
+            . venv/bin/activate
+            pip install --no-cache-dir -r requirements.txt
       - save_cache:
           paths:
             - ./venv
-          key: 'v1-dependencies-{{ checksum "requirements.txt" }}'
+          key: v1-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Run Tests
-          command: pytest tests/ -v
+          command: |
+            . venv/bin/activate
+            pytest tests/
+      # Docker steps
       - run:
-          name: Build Docker Image
-          command: 'docker build -t $DOCKER_USERNAME/churn-prediction:latest .'
-      - run:
-          name: Docker Login
-          command: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-      - run:
-          name: Push Docker Image
-          command: 'docker push $DOCKER_USERNAME/churn-prediction:latest'
-  
+          name: Build and Push Docker Image
+          command: |
+            # Print Docker version
+            docker version
+            # Build image
+            docker build -t $DOCKER_USERNAME/churn-prediction:latest .
+            # Login to DockerHub
+            echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+            # Push image
+            docker push $DOCKER_USERNAME/churn-prediction:latest
 workflows:
-  build-deploy:
+  build-test-deploy:
     jobs:
-      - build-and-test 
+      - build-and-test:
+          context: 
+            - docker-hub-creds
