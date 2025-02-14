@@ -20,7 +20,7 @@ jobs:
           command: pytest tests/ -v
       - run:
           name: Build Docker Image
-          command: 'docker build -t $DOCKER_USERNAME/churn-prediction:latest . .'
+          command: 'docker build -t $DOCKER_USERNAME/churn-prediction:latest .'
       - run:
           name: Docker Login
           command: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
