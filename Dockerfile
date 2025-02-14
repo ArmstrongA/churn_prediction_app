@@ -17,7 +17,7 @@ COPY scaler.pkl .
 # Copy the application code
 COPY main.py .
 COPY prediction_pipeline.py .
-COPY datapreparation3.py .
+COPY data_preparation_.py .
 COPY feature_selection.py .
 
 # Make port 8000 available to the world outside this container
