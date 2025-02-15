@@ -1,7 +1,7 @@
 import pandas as pd
 import joblib
 
-from data_preparation_ import DataPreparation
+from data_preparation import DataPreparation
 
 def predict_churn(data, model_path, scaler_path):
     try:

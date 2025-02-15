@@ -1,4 +1,4 @@
-# data_preparation.py
+# data_preparation3.py
 
 import pandas as pd
 import numpy as np
@@ -6,6 +6,12 @@ from sklearn.preprocessing import LabelEncoder, StandardScaler, PowerTransformer
 from sklearn.impute import SimpleImputer
 import joblib
 import logging
+import pandas as pd
+import torch
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline 
+import torch.nn.functional as F
+from sklearn.decomposition import PCA
+from sklearn.random_projection import GaussianRandomProjection
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -16,12 +22,12 @@ class DataPreparation:
         self.label_encoders = {}
         self.scaler = StandardScaler()
         self.power_transformer = PowerTransformer()
-        self.imputer = SimpleImputer(strategy='median')
+        self.imputer = SimpleImputer(strategy='mean')
         
-    def load_data(self, file_path):
+    def load_data(self, data):
         """Load and validate the dataset."""
         try:
-            df = pd.read_csv(file_path)
+            df = data
             
             logger.info(f"Successfully loaded dataset with shape: {df.shape}")
             return df
@@ -50,11 +56,6 @@ class DataPreparation:
     def engineer_basic_features(self, df):
         """Create basic derived features."""
         df = df.copy()
-        # drop unecessary columns
-        df = df.drop(['CustomerID',	'Count', 'Country',	'State', 'City', 'Zip Code', 'Lat Long', 'Latitude', 
-                      'Longitude', 'Churn Value', 'Churn Score',	'CLTV',	'Churn Reason'], axis=1)
-
-        
         # Customer value features
         df['Total Charges'] = pd.to_numeric(df['Total Charges'], errors='coerce')
         df['Revenue_per_Month'] = df['Total Charges'] / df['Tenure Months']
@@ -71,11 +72,8 @@ class DataPreparation:
         )
         
         # Customer segments
-        df['Value_Segment'] = pd.qcut(df['Monthly Charges'], q=4, 
-                                    labels=['Low', 'Medium', 'High', 'Premium'])
-        # ... your training code ...
-        bins = pd.qcut(df['Monthly Charges'], q=4, retbins=True)[1] # Get the bin edges
-        joblib.dump(bins, 'quantile_bins.pkl')  # Save the bins
+        bins = joblib.load('quantile_bins.pkl') # Load the bins
+        df['Value_Segment'] = pd.cut(df['Monthly Charges'], bins=bins, include_lowest=True, labels=['Low', 'Medium', 'High', 'Premium'])
         
         return df
     
@@ -167,10 +165,85 @@ class DataPreparation:
         
         return df
     
-    def prepare_data(self, file_path):
+    def extract_sentiment(self, text_column, model_name="distilbert-base-uncased-finetuned-sst-2-english"):
+        """Extracts sentiment from a text column and returns the updated DataFrame.
+        
+        Args:
+            text_column (pd.Series): Column containing text data
+            model_name (str): Hugging Face model name for sentiment analysis
+            
+        Returns:
+            pd.Series: Series containing sentiment labels
+        """
+        # Load model and tokenizer once
+        tokenizer = AutoTokenizer.from_pretrained(model_name)
+        model = AutoModelForSequenceClassification.from_pretrained(model_name)
+        
+        # Function to get sentiment for a single text
+        def get_sentiment(text):
+            # Handle NaN values gracefully
+            if pd.isna(text) or text.strip() == "":
+                return "Neutral"
+            
+            # Tokenize and get model outputs
+            inputs = tokenizer(text, return_tensors="pt")
+            with torch.no_grad():
+                outputs = model(**inputs)
+            
+            # Get predicted label
+            logits = outputs.logits
+            predicted_class_id = logits.argmax().item()
+            return model.config.id2label[predicted_class_id]
+        
+        # Apply sentiment extraction to the text column
+        return text_column.apply(get_sentiment)
+    def extract_and_reduce_features(self, text_column, model_name="sentence-transformers/all-mpnet-base-v2", n_components=10):
+        """
+        Extracts text features using Hugging Face model, performs PCA to reduce dimensions,
+        and returns a DataFrame with the reduced features.
+        """
+        # Load feature extraction pipeline once
+        feature_extractor = pipeline(
+            "feature-extraction",
+            model=model_name,
+            framework="pt"
+        )
+        
+        # Function to extract features for one text
+        def get_features(text):
+            # Handle NaN values gracefully
+            if pd.isna(text) or text.strip() == "":
+                return np.zeros((768,))  # Return zero vector for empty text
+            
+            # Extract features and take mean across tokens
+            features = feature_extractor(text, return_tensors="pt")[0]
+            reduced_features = features.numpy().mean(axis=0)
+            return reduced_features
+        
+        # Apply feature extraction to the text column
+        feature_matrix = np.stack(text_column.apply(get_features))
+        
+        # # Perform PCA to reduce the dimensionality to n_components
+        # pca = PCA(n_components=n_components)
+        # reduced_features = pca.fit_transform(feature_matrix)
+        
+        # # Create DataFrame for the reduced features
+        # feature_columns = [f'pca_feature_{i}' for i in range(n_components)]
+        # feature_df = pd.DataFrame(reduced_features, columns=feature_columns)
+        # Perform Random Projection to reduce the dimensionality to n_components
+        random_projection = GaussianRandomProjection(n_components=n_components, random_state=42)
+        reduced_features = random_projection.fit_transform(feature_matrix)
+
+        # Create DataFrame for the reduced features
+        feature_columns = [f'pca_{i}' for i in range(n_components)]
+        feature_df = pd.DataFrame(reduced_features, columns=feature_columns)
+        
+        return feature_df
+
+    def prepare_data(self, data):
         """Complete data preparation pipeline."""
         # Load and validate
-        df = self.load_data(file_path)
+        df = self.load_data(data)
         validation_report = self.validate_data(df)
         
         if validation_report['duplicates'] > 0:
@@ -184,11 +257,21 @@ class DataPreparation:
         # Encoding and scaling
         df = self.encode_categorical_features(df)
         df = self.scale_numerical_features(df)
+
+        # Add text features
+        df['customer_sentiment'] = self.extract_sentiment(df['customer_text'])
+        label_encoder = LabelEncoder()
+        df['sentiment_encoded'] = label_encoder.fit_transform(df['customer_sentiment'])
+        # Extract features and reduce them to 10 components
+        reduced_features_df = self.extract_and_reduce_features(df['customer_text'])
+
+        # Concatenate the reduced features with the original DataFrame
+        df = pd.concat([df, reduced_features_df], axis=1)
         
         logger.info("Data preparation completed successfully")
         return df, validation_report
+    
 
 if __name__ == "__main__":
     prep = DataPreparation()
-    processed_df, validation_report = prep.prepare_data('Telco_customer_churn.csv')
-    processed_df.to_csv('preped_telco_data.csv', index=False)
+    processed_df, validation_report = prep.prepare_data()

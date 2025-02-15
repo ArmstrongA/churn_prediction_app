@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build-and-test:
     docker:
-      - image: cimg/python:3.12.5
+      - image: cimg/python:3.12.9
     steps:
       - checkout
       # Enable Docker support

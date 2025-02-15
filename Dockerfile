@@ -11,14 +11,17 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the model files
-COPY baseline_churn_model.pkl .
+COPY churn_model.pkl .
 COPY scaler.pkl .
+COPY boruta_features.pkl .
+
 
 # Copy the application code
 COPY main.py .
 COPY prediction_pipeline.py .
 COPY data_preparation_.py .
 COPY feature_selection.py .
+COPY quantile_bins.pkl .
 
 # Make port 8000 available to the world outside this container
 EXPOSE 8000

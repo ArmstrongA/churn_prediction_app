@@ -5,6 +5,7 @@ from sklearn.feature_selection import SelectKBest, mutual_info_classif, RFE
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
 from boruta import BorutaPy
+import joblib
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -97,6 +98,9 @@ if __name__ == "__main__":
     selected_kbest, kbest_scores = selector.filter_method(k=10)
     selected_rfe, rfe_ranks = selector.wrapper_method(n_features=10)
     selected_boruta, boruta_ranks = selector.boruta_selection()
+    
+    # Save features
+    joblib.dump(selected_boruta, "boruta_features.pkl")
     
     print("Top Features from SelectKBest:", selected_kbest)
     print("Top Features from RFE:", selected_rfe)

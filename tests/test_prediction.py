@@ -26,7 +26,7 @@ from prediction_pipeline import predict_churn
 #         "Payment Method": "Electronic check",
 #         "Monthly Charges": 65.6,
 #         "Total Charges": 1576.45,
-#         "customer_text": "You internet is horrible these days!"
+#         "customer_text": "Your internet is horrible these days!"
 #     }
     
 #     result = predict_churn(test_data, "churn_model.pkl", "scaler.pkl")
@@ -58,7 +58,7 @@ def test_predict_churn_batch():
             "Payment Method": "Electronic check",
             "Monthly Charges": 65.6,
             "Total Charges": 1576.45,
-            "customer_text": "You internet is horrible these days!"
+            "customer_text": "Your internet is horrible these days!"
         },
         {
             "Gender": "Female",
@@ -80,7 +80,7 @@ def test_predict_churn_batch():
             "Payment Method": "Electronic check",
             "Monthly Charges": 65.6,
             "Total Charges": 1576.45,
-            "customer_text": "You internet is horrible these days!"
+            "customer_text": "Your internet is horrible these days!"
         }
     ]
     
