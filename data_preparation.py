@@ -275,3 +275,5 @@ class DataPreparation:
 if __name__ == "__main__":
     prep = DataPreparation()
     processed_df, validation_report = prep.prepare_data()
+    # Use only in training
+    # processed_df.to_csv('.data/model_data.csv', index=False) 

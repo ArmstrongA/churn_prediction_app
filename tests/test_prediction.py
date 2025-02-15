@@ -2,7 +2,6 @@
 import pytest
 import pandas as pd
 import numpy as np
-
 from prediction_pipeline import predict_churn
 
 # def test_predict_churn_single():
