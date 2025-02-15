@@ -45,7 +45,7 @@ source churn-pred /bin/activate  # On Windows, use: churn-pred \Scripts\activate
 Install initial dependencies:
 
 ```bash
-pip install pandas numpy scikit-learn transformers sentence_transformers torch fastapi uvicorn boruta 
+pip install pandas numpy scikit-learn transformers sentence_transformers torch fastapi uvicorn boruta circleci
 pip freeze > requirements.txt
 ```
 Now that you have your environment set up and packages installed, you are ready to start building your churn prediction system. In the next section, you will explore the telco churn dataset to identify some patterns.

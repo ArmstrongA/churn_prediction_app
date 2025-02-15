@@ -19,7 +19,7 @@ COPY boruta_features.pkl .
 # Copy the application code
 COPY main.py .
 COPY prediction_pipeline.py .
-COPY data_preparation_.py .
+COPY data_preparation.py .
 COPY feature_selection.py .
 COPY quantile_bins.pkl .
 
